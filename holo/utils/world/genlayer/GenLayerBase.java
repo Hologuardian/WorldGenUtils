@@ -1,4 +1,4 @@
-package holo.sojourn.world.base.genlayers;
+package holo.utils.world.genlayer;
 
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.IntCache;

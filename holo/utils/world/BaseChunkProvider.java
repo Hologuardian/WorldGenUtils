@@ -1,4 +1,4 @@
-package holo.sojourn.world.base;
+package holo.utils.world;
 
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.MINESHAFT;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCATTERED_FEATURE;

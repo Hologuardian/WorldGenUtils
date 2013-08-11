@@ -1,4 +1,4 @@
-package holo.sojourn.world.base;
+package holo.utils.world;
 
 import static net.minecraft.world.biome.BiomeGenBase.forest;
 import static net.minecraft.world.biome.BiomeGenBase.forestHills;

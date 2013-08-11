@@ -1,4 +1,4 @@
-package holo.sojourn.world.base.genlayers;
+package holo.utils.world.genlayer;
 
 import java.util.HashMap;
 import java.util.Map;

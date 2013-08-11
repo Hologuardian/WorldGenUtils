@@ -1,4 +1,4 @@
-package holo.sojourn.world.base;
+package holo.utils.world;
 
 import java.util.Random;
 
@@ -8,17 +8,26 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.MapGenBase;
 
-public class HighRavineGen extends MapGenBase
+public class HighCaveGen extends MapGenBase
 {
-    private float[] field_75046_d = new float[1024];
-
-    protected void generateRavine(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    /**
+     * Generates a larger initial cave node than usual. Called 25% of the time.
+     */
+    protected void generateLargeCaveNode(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10)
     {
-        Random random = new Random(par1);
+        this.generateCaveNode(par1, par3, par4, par5ArrayOfByte, par6, par8, par10, 1.0F + this.rand.nextFloat() * 12.0F, 0.0F, 0.0F, -1, -1, 0.5D);
+    }
+
+    /**
+     * Generates a node in the current cave system recursion tree.
+     */
+    protected void generateCaveNode(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    {
         double d4 = (double)(par3 * 16 + 8);
         double d5 = (double)(par4 * 16 + 8);
         float f3 = 0.0F;
         float f4 = 0.0F;
+        Random random = new Random(par1);
 
         if (par16 <= 0)
         {
@@ -34,36 +43,40 @@ public class HighRavineGen extends MapGenBase
             flag = true;
         }
 
-        float f5 = 1.0F;
+        int k1 = random.nextInt(par16 / 2) + par16 / 4;
 
-        for (int k1 = 0; k1 < 128; ++k1)
-        {
-            if (k1 == 0 || random.nextInt(3) == 0)
-            {
-                f5 = 1.0F + random.nextFloat() * random.nextFloat() * 1.0F;
-            }
-
-            this.field_75046_d[k1] = f5 * f5;
-        }
-
-        for (; par15 < par16; ++par15)
+        for (boolean flag1 = random.nextInt(6) == 0; par15 < par16; ++par15)
         {
             double d6 = 1.5D + (double)(MathHelper.sin((float)par15 * (float)Math.PI / (float)par16) * par12 * 1.0F);
             double d7 = d6 * par17;
-            d6 *= (double)random.nextFloat() * 0.25D + 0.75D;
-            d7 *= (double)random.nextFloat() * 0.25D + 0.75D;
-            float f6 = MathHelper.cos(par14);
-            float f7 = MathHelper.sin(par14);
-            par6 += (double)(MathHelper.cos(par13) * f6);
-            par8 += (double)f7;
-            par10 += (double)(MathHelper.sin(par13) * f6);
-            par14 *= 0.7F;
-            par14 += f4 * 0.05F;
-            par13 += f3 * 0.05F;
-            f4 *= 0.8F;
-            f3 *= 0.5F;
+            float f5 = MathHelper.cos(par14);
+            float f6 = MathHelper.sin(par14);
+            par6 += (double)(MathHelper.cos(par13) * f5);
+            par8 += (double)f6;
+            par10 += (double)(MathHelper.sin(par13) * f5);
+
+            if (flag1)
+            {
+                par14 *= 0.92F;
+            }
+            else
+            {
+                par14 *= 0.7F;
+            }
+
+            par14 += f4 * 0.1F;
+            par13 += f3 * 0.1F;
+            f4 *= 0.9F;
+            f3 *= 0.75F;
             f4 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 2.0F;
             f3 += (random.nextFloat() - random.nextFloat()) * random.nextFloat() * 4.0F;
+
+            if (!flag && par15 == k1 && par12 > 1.0F && par16 > 0)
+            {
+                this.generateCaveNode(random.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, par5ArrayOfByte, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + ((float)Math.PI / 2F), par14 / 3.0F, par15, par16, 1.0D);
+                return;
+            }
 
             if (flag || random.nextInt(4) != 0)
             {
@@ -101,9 +114,9 @@ public class HighRavineGen extends MapGenBase
                         j2 = 1;
                     }
 
-                    if (k2 > 120)
+                    if (k2 > 180)
                     {
-                        k2 = 120;
+                        k2 = 180;
                     }
 
                     if (l2 < 0)
@@ -116,15 +129,15 @@ public class HighRavineGen extends MapGenBase
                         i3 = 16;
                     }
 
-                    boolean flag1 = false;
+                    boolean flag2 = false;
                     int j3;
                     int k3;
 
-                    for (j3 = l1; !flag1 && j3 < i2; ++j3)
+                    for (j3 = l1; !flag2 && j3 < i2; ++j3)
                     {
-                        for (int l3 = l2; !flag1 && l3 < i3; ++l3)
+                        for (int l3 = l2; !flag2 && l3 < i3; ++l3)
                         {
-                            for (int i4 = k2 + 1; !flag1 && i4 >= j2 - 1; --i4)
+                            for (int i4 = k2 + 1; !flag2 && i4 >= j2 - 1; --i4)
                             {
                                 k3 = (j3 * 16 + l3) * 128 + i4;
 
@@ -132,7 +145,7 @@ public class HighRavineGen extends MapGenBase
                                 {
                                     if (isOceanBlock(par5ArrayOfByte, k3, j3, i4, l3, par3, par4))
                                     {
-                                        flag1 = true;
+                                        flag2 = true;
                                     }
 
                                     if (i4 != j2 - 1 && j3 != l1 && j3 != i2 - 1 && l3 != l2 && l3 != i3 - 1)
@@ -144,7 +157,7 @@ public class HighRavineGen extends MapGenBase
                         }
                     }
 
-                    if (!flag1)
+                    if (!flag2)
                     {
                         for (j3 = l1; j3 < i2; ++j3)
                         {
@@ -154,7 +167,7 @@ public class HighRavineGen extends MapGenBase
                             {
                                 double d13 = ((double)(k3 + par4 * 16) + 0.5D - par10) / d6;
                                 int j4 = (j3 * 16 + k3) * 256 + k2;
-                                boolean flag2 = false;
+                                boolean flag3 = false;
 
                                 if (d12 * d12 + d13 * d13 < 1.0D)
                                 {
@@ -162,14 +175,14 @@ public class HighRavineGen extends MapGenBase
                                     {
                                         double d14 = ((double)k4 + 0.5D - par8) / d7;
 
-                                        if ((d12 * d12 + d13 * d13) * (double)this.field_75046_d[k4] + d14 * d14 / 6.0D < 1.0D)
+                                        if (d14 > -0.7D && d12 * d12 + d14 * d14 + d13 * d13 < 1.0D)
                                         {
                                             if (isTopBlock(par5ArrayOfByte, j4, j3, k4, k3, par3, par4))
                                             {
-                                                flag2 = true;
+                                                flag3 = true;
                                             }
 
-                                            digBlock(par5ArrayOfByte, j4, j3, k4, k3, par3, par4, flag2);
+                                            digBlock(par5ArrayOfByte, j4, j3, k4, k3, par3, par4, flag3);
                                         }
 
                                         --j4;
@@ -193,19 +206,38 @@ public class HighRavineGen extends MapGenBase
      */
     protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
     {
-        if (this.rand.nextInt(50) == 0)
+        int i1 = this.rand.nextInt(this.rand.nextInt(this.rand.nextInt(80) + 1) + 1);
+
+        if (this.rand.nextInt(15) != 0)
+        {
+            i1 = 0;
+        }
+
+        for (int j1 = 0; j1 < i1; ++j1)
         {
             double d0 = (double)(par2 * 16 + this.rand.nextInt(16));
-            double d1 = (double)(this.rand.nextInt(this.rand.nextInt(120) + 8) + 20);
+            double d1 = (double)this.rand.nextInt(this.rand.nextInt(240) + 8);
             double d2 = (double)(par3 * 16 + this.rand.nextInt(16));
-            byte b0 = 1;
+            int k1 = 1;
 
-            for (int i1 = 0; i1 < b0; ++i1)
+            if (this.rand.nextInt(4) == 0)
             {
-                float f = this.rand.nextFloat() * (float)Math.PI * 8.0F;
-                float f1 = (this.rand.nextFloat() - 0.5F) * 4.0F / 8.0F;
-                float f2 = (this.rand.nextFloat() * 8.0F + this.rand.nextFloat()) * 2.0F;
-                this.generateRavine(this.rand.nextLong(), par4, par5, par6ArrayOfByte, d0, d1, d2, f2, f, f1, 0, 0, 3.0D);
+                this.generateLargeCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, d0, d1, d2);
+                k1 += this.rand.nextInt(4);
+            }
+
+            for (int l1 = 0; l1 < k1; ++l1)
+            {
+                float f = this.rand.nextFloat() * (float)Math.PI * 2.0F;
+                float f1 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
+                float f2 = this.rand.nextFloat() * 2.0F + this.rand.nextFloat();
+
+                if (this.rand.nextInt(10) == 0)
+                {
+                    f2 *= this.rand.nextFloat() * this.rand.nextFloat() * 3.0F + 1.0F;
+                }
+
+                this.generateCaveNode(this.rand.nextLong(), par4, par5, par6ArrayOfByte, d0, d1, d2, f2, f, f1, 0, 0, 1.0D);
             }
         }
     }

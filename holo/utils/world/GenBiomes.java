@@ -1,9 +1,9 @@
-package holo.sojourn.world.base;
+package holo.utils.world;
 
-import holo.sojourn.world.base.genlayers.BaseGenLayerBiome;
-import holo.sojourn.world.base.genlayers.BaseGenLayerHills;
-import holo.sojourn.world.base.genlayers.BaseGenLayerShore;
-import holo.sojourn.world.base.genlayers.GenLayerBase;
+import holo.utils.world.genlayer.BaseGenLayerBiome;
+import holo.utils.world.genlayer.BaseGenLayerHills;
+import holo.utils.world.genlayer.BaseGenLayerShore;
+import holo.utils.world.genlayer.GenLayerBase;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
