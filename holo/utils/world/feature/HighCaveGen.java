@@ -1,4 +1,4 @@
-package holo.utils.world;
+package holo.utils.world.feature;
 
 import java.util.Random;
 

@@ -1,9 +1,6 @@
-package holo.utils.world;
+package holo.utils.world.genlayer;
 
-import holo.utils.world.genlayer.BaseGenLayerBiome;
-import holo.utils.world.genlayer.BaseGenLayerHills;
-import holo.utils.world.genlayer.BaseGenLayerShore;
-import holo.utils.world.genlayer.GenLayerBase;
+import holo.utils.world.BaseWorldType;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerSmooth;
@@ -36,7 +33,6 @@ public class GenBiomes extends GenLayer
     public static GenLayer[] initializeNewBiomeGenerators(long par0, BaseWorldType type)
     {
         GenLayerBase genlayerfuzzyzoom = new GenLayerBase(1L, type.getBiomesForWorldType()[0].biomeID);
-        
         byte b0 = (byte) type.biomeSize;
         
         b0 = getModdedBiomeSize(type, b0);
@@ -46,8 +42,9 @@ public class GenBiomes extends GenLayer
         
         GenLayer genlayer1 = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 0);
         BaseGenLayerBiome genlayerbiome = new BaseGenLayerBiome(200L, genlayer1, type);
-        genlayer1 = GenLayerZoom.magnify(1000L, genlayerbiome, 2);
+        genlayer1 = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 2);
         Object object = new BaseGenLayerHills(1000L, genlayer1, type.hills);
+        object = new BaseGenLayerAddIslands(5L, (GenLayer)object, type);
 
         for (int j = 0; j < b0; ++j)
         {

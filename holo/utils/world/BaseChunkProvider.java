@@ -149,10 +149,10 @@ public class BaseChunkProvider implements IChunkProvider
     public void generateTerrain(int par1, int par2, byte[] par3ArrayOfByte)
     {
         byte b0 = 4;
-        byte b1 = 32;
+        byte b1 = (byte) (16 * this.worldType.worldScale);
         int b2 = this.worldType.waterHeight;
         int k = b0 + 1;
-        byte b3 = 33;
+        byte b3 = (byte) (b1 + 1);
         int l = b0 + 1;
         this.biomesForGeneration = this.worldObj.getWorldChunkManager().getBiomesForGeneration(this.biomesForGeneration, par1 * 4 - 2, par2 * 4 - 2, k + 5, l + 5);
         this.noiseArray = this.initializeNoiseField(this.noiseArray, par1 * b0, 0, par2 * b0, k, b3, l);

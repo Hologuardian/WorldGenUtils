@@ -1,5 +1,8 @@
 package holo.utils.world;
 
+import holo.utils.world.feature.HighCaveGen;
+import holo.utils.world.feature.HighRavineGen;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +16,8 @@ public class BaseWorldType extends WorldType
 {
     public Map<BiomeGenBase, Integer> majorBiomes;
     public Map<BiomeGenBase, BiomeGenBase> hills;
+    public Map<BiomeGenBase, BiomeGenBase> islands;
+    public Map<BiomeGenBase, Integer> islandRarity;
     public Map<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>> subBiomes;
     public BiomeGenBase riverBiome = null;
     
@@ -23,12 +28,15 @@ public class BaseWorldType extends WorldType
     public int snowHeight;
     public int biomeSize;
     public int worldHeight = 256;
+    public float worldScale = 2.0F;
     public byte fillBlock = (byte) Block.stone.blockID;
     
     public BaseWorldType(int par1, String par2Str, int par3)
     {
         super(par1, par2Str, par3);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
+        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
+        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
         this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.waterHeight = 121;
@@ -40,6 +48,8 @@ public class BaseWorldType extends WorldType
     {
         super(par1, par2Str);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
+        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
+        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
         this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.waterHeight = 121;
@@ -51,6 +61,8 @@ public class BaseWorldType extends WorldType
     {
         super(par1, par2Str);
         this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
+        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
+        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.hills = hillBiomes;
         this.subBiomes = subB;
         this.riverBiome = river;
@@ -133,6 +145,12 @@ public class BaseWorldType extends WorldType
         this.ravineGen = ravines;
     }
     
+    public void addIslandBiome(BiomeGenBase encasingBiome, BiomeGenBase islandBiome, int rarity)
+    {
+    	this.islands.put(encasingBiome, islandBiome);
+    	this.islandRarity.put(islandBiome, rarity);
+    }
+    
     public void setWorldHeight(int height)
     {
         this.worldHeight = height;
@@ -141,5 +159,10 @@ public class BaseWorldType extends WorldType
     public void setFillBlock(int ID)
     {
         this.fillBlock = (byte)ID;
+    }
+    
+    public void setWorldScale(float scale)
+    {
+        this.worldScale = scale;
     }
 }
