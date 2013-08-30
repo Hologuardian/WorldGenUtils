@@ -6,6 +6,7 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRO
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -83,6 +84,8 @@ public class BaseChunkProvider implements IChunkProvider
 
     /** The biomes that are used to generate the chunk */
     private BiomeGenBase[] biomesForGeneration;
+    
+    private ArrayList<MapGenBase> mapGenFeatures;
 
     /** A double array that hold terrain noise from noiseGen3 */
     double[] noise3;
@@ -104,7 +107,7 @@ public class BaseChunkProvider implements IChunkProvider
      */
     float[] parabolicField;
     int[][] field_73219_j = new int[32][32];
-
+    
     {
         strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator, STRONGHOLD);
         villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator, VILLAGE);
@@ -140,6 +143,8 @@ public class BaseChunkProvider implements IChunkProvider
         
         caveGenerator = type.caveGen;
         ravineGenerator = type.ravineGen;
+
+        mapGenFeatures = type.mapGenFeatures;
     }
 
     /**
@@ -344,7 +349,12 @@ public class BaseChunkProvider implements IChunkProvider
             this.caveGenerator.generate(this, this.worldObj, par1, par2, abyte);
         if (this.ravineGenerator != null)
             this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
-
+        
+        for(MapGenBase feature : mapGenFeatures)
+        {
+        	feature.generate(this, this.worldObj, par1, par2, abyte);
+        }
+        
         if (this.mapFeaturesEnabled)
         {
             this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, abyte);

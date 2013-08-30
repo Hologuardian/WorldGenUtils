@@ -3,6 +3,7 @@ package holo.utils.world;
 import holo.utils.world.feature.HighCaveGen;
 import holo.utils.world.feature.HighRavineGen;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,8 @@ public class BaseWorldType extends WorldType
     public int worldHeight = 256;
     public float worldScale = 2.0F;
     public byte fillBlock = (byte) Block.stone.blockID;
+    
+    public ArrayList<MapGenBase> mapGenFeatures = new ArrayList<MapGenBase>();
     
     public BaseWorldType(int par1, String par2Str, int par3)
     {
@@ -164,5 +167,15 @@ public class BaseWorldType extends WorldType
     public void setWorldScale(float scale)
     {
         this.worldScale = scale;
+    }
+    
+    public void addMapGenFeature(MapGenBase gen)
+    {
+    	this.mapGenFeatures.add(gen);
+    }
+    
+    public void removeMapGenFeature(MapGenBase gen)
+    {
+    	this.mapGenFeatures.remove(gen);
     }
 }

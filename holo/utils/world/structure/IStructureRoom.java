@@ -14,9 +14,18 @@ public interface IStructureRoom
 	public abstract StructureBoundingBox getBB();
 	
 	/**
-	 * @return Moves the bounding box.
+	 * @return The structure bounding box for the room with no coordinates only the sizes.
 	 */
-	public abstract StructureBoundingBox moveBB();
+	public abstract StructureBoundingBox getDefaultBB();
+	
+	/**
+	 * Shifts the bounding box to the x, y, z coordinates provided.
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return Shifted bounding box.
+	 */
+	public abstract StructureBoundingBox moveBB(int x, int y, int z);
 	
 	/**
 	 * Checks to see if a door can be created at the specified coordinates used to align rooms.
