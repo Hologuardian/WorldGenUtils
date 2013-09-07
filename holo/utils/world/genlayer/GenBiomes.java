@@ -42,9 +42,10 @@ public class GenBiomes extends GenLayer
         
         GenLayer genlayer1 = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 0);
         BaseGenLayerBiome genlayerbiome = new BaseGenLayerBiome(200L, genlayer1, type);
-        genlayer1 = GenLayerZoom.magnify(1000L, genlayerfuzzyzoom, 2);
+        genlayer1 = GenLayerZoom.magnify(1000L, genlayerbiome, 2);
         Object object = new BaseGenLayerHills(1000L, genlayer1, type.hills);
-        object = new BaseGenLayerAddIslands(5L, (GenLayer)object, type);
+        if(!type.islands.isEmpty())
+        	object = new BaseGenLayerAddIslands(5L, (GenLayer)object, type);
 
         for (int j = 0; j < b0; ++j)
         {

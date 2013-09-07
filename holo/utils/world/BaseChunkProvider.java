@@ -235,7 +235,6 @@ public class BaseChunkProvider implements IChunkProvider
         if (event.getResult() == Result.DENY) return;
 
         int b0 = this.worldType.waterHeight;
-        int snowCap = this.worldType.snowHeight;
         double d0 = 0.03125D;
         this.stoneNoise = this.noiseGen4.generateNoiseOctaves(this.stoneNoise, par1 * 16, par2 * 16, 0, 16, 16, 1, d0 * 2.0D, d0 * 2.0D, d0 * 2.0D);
 
@@ -298,10 +297,6 @@ public class BaseChunkProvider implements IChunkProvider
                                 if (k1 >= b0 - 1)
                                 {
                                     par3ArrayOfByte[l1] = b1;
-                                    if (k1 >= snowCap && k1 != 255)
-                                    {
-                                        par3ArrayOfByte[l1 + 1] = (byte) Block.snow.blockID;
-                                    }
                                 }
                                 else
                                 {

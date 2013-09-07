@@ -31,7 +31,7 @@ public class BaseChunkManager extends WorldChunkManager
 {
     public static ArrayList<BiomeGenBase> allowedBiomes = new ArrayList<BiomeGenBase>(Arrays.asList(forest, plains, taiga, taigaHills, forestHills, jungle. jungleHills));
     private GenLayer genBiomes;
-
+    private int snowHeight;
     /** A GenLayer containing the indices into BiomeGenBase.biomeList[] */
     private GenLayer biomeIndexLayer;
 
@@ -55,6 +55,7 @@ public class BaseChunkManager extends WorldChunkManager
         {
             GenLayer[] agenlayer = GenBiomes.initializeNewBiomeGenerators(par1, (BaseWorldType) par3WorldType);
             agenlayer = getModdedBiomeGenerators(par3WorldType, par1, agenlayer);
+            this.snowHeight = ((BaseWorldType) par3WorldType).snowHeight;
             this.genBiomes = agenlayer[0];
             this.biomeIndexLayer = agenlayer[1];
         }
