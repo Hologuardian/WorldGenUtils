@@ -1,5 +1,6 @@
 package holo.utils.world;
 
+import holo.utils.world.feature.BaseMapGen;
 import holo.utils.world.feature.HighCaveGen;
 import holo.utils.world.feature.HighRavineGen;
 
@@ -12,13 +13,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.MapGenBase;
+import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BaseWorldType extends WorldType
 {
-    public Map<BiomeGenBase, Integer> majorBiomes;
+    public Map<BiomeGenBase, Integer> majorBiomes = new HashMap<BiomeGenBase, Integer>();
     public Map<BiomeGenBase, BiomeGenBase> hills;
-    public Map<BiomeGenBase, BiomeGenBase> islands;
-    public Map<BiomeGenBase, Integer> islandRarity;
+    public Map<BiomeGenBase, BiomeGenBase> islands = new HashMap<BiomeGenBase, BiomeGenBase>();
+    public Map<BiomeGenBase, Integer> islandRarity = new HashMap<BiomeGenBase, Integer>();
     public Map<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>> subBiomes;
     public BiomeGenBase riverBiome = null;
     
@@ -32,16 +34,13 @@ public class BaseWorldType extends WorldType
     public float worldScale = 2.0F;
     public byte fillBlock = (byte) Block.stone.blockID;
     
-    public ArrayList<MapGenBase> mapGenFeatures = new ArrayList<MapGenBase>();
+    public ArrayList<BaseMapGen> mapGenFeatures = new ArrayList<BaseMapGen>();
     
     public BaseWorldType(int par1, String par2Str, int par3)
     {
         super(par1, par2Str, par3);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
-        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
-        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
-        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.waterHeight = 121;
         this.snowHeight = 205;
         this.biomeSize = 4;
@@ -51,10 +50,7 @@ public class BaseWorldType extends WorldType
     {
         super(par1, par2Str);
         this.hills = new HashMap<BiomeGenBase, BiomeGenBase>();
-        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
-        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.subBiomes = new HashMap<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>>();
-        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
         this.waterHeight = 121;
         this.snowHeight = 205;
         this.biomeSize = 4;
@@ -63,9 +59,6 @@ public class BaseWorldType extends WorldType
     public BaseWorldType(int par1, String par2Str, Map<BiomeGenBase, BiomeGenBase> hillBiomes, Map<BiomeGenBase, Map<BiomeGenBase, BiomeGenBase>> subB, BiomeGenBase river)
     {
         super(par1, par2Str);
-        this.majorBiomes = new HashMap<BiomeGenBase, Integer>();
-        this.islands = new HashMap<BiomeGenBase, BiomeGenBase>();
-        this.islandRarity = new HashMap<BiomeGenBase, Integer>();
         this.hills = hillBiomes;
         this.subBiomes = subB;
         this.riverBiome = river;
@@ -169,12 +162,12 @@ public class BaseWorldType extends WorldType
         this.worldScale = scale;
     }
     
-    public void addMapGenFeature(MapGenBase gen)
+    public void addMapGenFeature(BaseMapGen gen)
     {
     	this.mapGenFeatures.add(gen);
     }
     
-    public void removeMapGenFeature(MapGenBase gen)
+    public void removeMapGenFeature(BaseMapGen gen)
     {
     	this.mapGenFeatures.remove(gen);
     }

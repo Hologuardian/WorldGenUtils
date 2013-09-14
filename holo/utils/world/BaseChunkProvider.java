@@ -6,6 +6,8 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRO
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
 
+import holo.utils.world.feature.BaseMapGen;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.feature.MapGenScatteredFeature;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.MapGenMineshaft;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
@@ -85,7 +88,7 @@ public class BaseChunkProvider implements IChunkProvider
     /** The biomes that are used to generate the chunk */
     private BiomeGenBase[] biomesForGeneration;
     
-    private ArrayList<MapGenBase> mapGenFeatures;
+    private ArrayList<BaseMapGen> mapGenFeatures;
 
     /** A double array that hold terrain noise from noiseGen3 */
     double[] noise3;
@@ -345,18 +348,15 @@ public class BaseChunkProvider implements IChunkProvider
         if (this.ravineGenerator != null)
             this.ravineGenerator.generate(this, this.worldObj, par1, par2, abyte);
         
-        for(MapGenBase feature : mapGenFeatures)
-        {
-        	feature.generate(this, this.worldObj, par1, par2, abyte);
-        }
         
-        if (this.mapFeaturesEnabled)
-        {
-            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.villageGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, abyte);
-            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, abyte);
-        }
+        //TODO move to basetype for custom structure gen
+//        if (this.mapFeaturesEnabled)
+//        {
+//            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.villageGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, abyte);
+//        }
 
         short[] ashort = new short[65536];
         
@@ -376,6 +376,11 @@ public class BaseChunkProvider implements IChunkProvider
             }
         }
         
+        for(BaseMapGen feature : mapGenFeatures)
+        {
+        	if(feature.shouldGenerate(par1, par2))
+        		feature.generate(this, this.worldObj, par1, par2, ashort);
+        }
         
         byte[] bbyte = new byte[65536];
         Arrays.fill(bbyte, (byte)0);
@@ -645,7 +650,7 @@ public class BaseChunkProvider implements IChunkProvider
      */
     public String makeString()
     {
-        return "RandomLevelSource";
+        return worldType.getWorldTypeName();
     }
 
     /**
