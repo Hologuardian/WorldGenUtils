@@ -5,12 +5,14 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.SCAT
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD;
 import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE;
 import static net.minecraftforge.event.terraingen.PopulateChunkEvent.Populate.EventType.ICE;
-
 import holo.utils.world.feature.BaseMapGen;
+import holo.utils.world.feature.BaseWorldGenerator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -565,9 +567,9 @@ public class BaseChunkProvider implements IChunkProvider
     public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
     {
         BlockSand.fallInstantly = true;
-        int k = par2 * 16;
-        int l = par3 * 16;
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
+        int x = par2 * 16;
+        int z = par3 * 16;
+        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(x + 16, z + 16);
         this.rand.setSeed(this.worldObj.getSeed());
         long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         long j1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -575,40 +577,62 @@ public class BaseChunkProvider implements IChunkProvider
         boolean flag = false;
 
         MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
-
-        //TODO add custom structure gen
-//        if (this.mapFeaturesEnabled)
-//        {
-//            this.mineshaftGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//            flag = this.villageGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//            this.strongholdGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//            this.scatteredFeatureGenerator.generateStructuresInChunk(this.worldObj, this.rand, par2, par3);
-//        }
+        
+        Map<BaseWorldGenerator, Float> f = this.worldType.globalFeatures;
+        
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        
+        for(BaseWorldGenerator gen : f.keySet())
+        {
+        	float rarity = f.get(gen);
+        	if(rarity < 1)
+        	{
+        		if(this.rand.nextFloat() < rarity)
+        		{
+        			i = x + rand.nextInt(16);
+        			k = z + rand.nextInt(16);
+        			j = gen.getYPosition(this.worldObj, this.rand, i, k);
+        			gen.generate(this.worldObj, this.rand, i, j, k);
+        		}
+        	}
+        	else
+        	{
+        		for(int n = 0; n < rarity; ++n)
+        		{
+        			i = x + rand.nextInt(16);
+        			k = z + rand.nextInt(16);
+        			j = gen.getYPosition(this.worldObj, this.rand, i, k);
+        			gen.generate(this.worldObj, this.rand, i, j, k);
+        		}
+        	}
+        }
 
         int k1;
         int l1;
         int i2;
 
-        biomegenbase.decorate(this.worldObj, this.rand, k, l);
-        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, k + 8, l + 8, 16, 16, this.rand);
-        k += 8;
-        l += 8;
+        biomegenbase.decorate(this.worldObj, this.rand, x, z);
+        SpawnerAnimals.performWorldGenSpawning(this.worldObj, biomegenbase, x + 8, z + 8, 16, 16, this.rand);
+        x += 8;
+        z += 8;
 
         boolean doGen = TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag, ICE);
         for (k1 = 0; doGen && k1 < 16; ++k1)
         {
             for (l1 = 0; l1 < 16; ++l1)
             {
-                i2 = this.worldObj.getPrecipitationHeight(k + k1, l + l1);
+                i2 = this.worldObj.getPrecipitationHeight(x + k1, z + l1);
 
-                if (this.worldObj.isBlockFreezable(k1 + k, i2 - 1, l1 + l))
+                if (this.worldObj.isBlockFreezable(k1 + x, i2 - 1, l1 + z))
                 {
-                    this.worldObj.setBlock(k1 + k, i2 - 1, l1 + l, Block.ice.blockID, 0, 2);
+                    this.worldObj.setBlock(k1 + x, i2 - 1, l1 + z, Block.ice.blockID, 0, 2);
                 }
 
-                if (this.worldObj.canSnowAt(k1 + k, i2, l1 + l))
+                if (this.worldObj.canSnowAt(k1 + x, i2, l1 + z))
                 {
-                    this.worldObj.setBlock(k1 + k, i2, l1 + l, Block.snow.blockID, 0, 2);
+                    this.worldObj.setBlock(k1 + x, i2, l1 + z, Block.snow.blockID, 0, 2);
                 }
             }
         }
@@ -677,12 +701,12 @@ public class BaseChunkProvider implements IChunkProvider
 
     public void recreateStructures(int par1, int par2)
     {
-        if (this.mapFeaturesEnabled)
-        {
-            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
-        }
+//        if (this.mapFeaturesEnabled)
+//        {
+//            this.mineshaftGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+//            this.villageGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+//            this.strongholdGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+//            this.scatteredFeatureGenerator.generate(this, this.worldObj, par1, par2, (byte[])null);
+//        }
     }
 }

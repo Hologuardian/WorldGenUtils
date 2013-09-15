@@ -1,6 +1,7 @@
 package holo.utils.world;
 
 import holo.utils.world.feature.BaseMapGen;
+import holo.utils.world.feature.BaseWorldGenerator;
 import holo.utils.world.feature.HighCaveGen;
 import holo.utils.world.feature.HighRavineGen;
 
@@ -13,7 +14,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.MapGenBase;
-import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BaseWorldType extends WorldType
 {
@@ -35,6 +35,7 @@ public class BaseWorldType extends WorldType
     public byte fillBlock = (byte) Block.stone.blockID;
     
     public ArrayList<BaseMapGen> mapGenFeatures = new ArrayList<BaseMapGen>();
+    public Map<BaseWorldGenerator, Float> globalFeatures = new HashMap<BaseWorldGenerator, Float>();
     
     public BaseWorldType(int par1, String par2Str, int par3)
     {
@@ -170,5 +171,15 @@ public class BaseWorldType extends WorldType
     public void removeMapGenFeature(BaseMapGen gen)
     {
     	this.mapGenFeatures.remove(gen);
+    }
+    
+    public void addGlobalFeature(BaseWorldGenerator gen, float rarity)
+    {
+    	this.globalFeatures.put(gen, rarity);
+    }
+    
+    public void removeGlobalFeature(BaseWorldGenerator gen)
+    {
+    	this.globalFeatures.remove(gen);
     }
 }
