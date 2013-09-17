@@ -32,7 +32,8 @@ public class BaseWorldType extends WorldType
     public int biomeSize;
     public int worldHeight = 256;
     public float worldScale = 2.0F;
-    public byte fillBlock = (byte) Block.stone.blockID;
+    public short fillBlock = (short) Block.stone.blockID;
+    public short waterBlock = (short) Block.waterStill.blockID;
     
     public ArrayList<BaseMapGen> mapGenFeatures = new ArrayList<BaseMapGen>();
     public Map<BaseWorldGenerator, Float> globalFeatures = new HashMap<BaseWorldGenerator, Float>();
