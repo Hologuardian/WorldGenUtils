@@ -2,6 +2,7 @@ package holo.utils.world.structure;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -39,7 +40,7 @@ public abstract class BaseRoom implements IStructureRoom
 	@Override
 	public void generate(World world) 
 	{
-		int[] blocks = getBlocks();
+		Block[] blocks = getBlocks();
 		
 		StructureBoundingBox bb = getBB();
 		

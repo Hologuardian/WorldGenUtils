@@ -6,7 +6,6 @@ import static net.minecraft.world.biome.BiomeGenBase.jungle;
 import static net.minecraft.world.biome.BiomeGenBase.plains;
 import static net.minecraft.world.biome.BiomeGenBase.taiga;
 import static net.minecraft.world.biome.BiomeGenBase.taigaHills;
-
 import holo.utils.world.genlayer.GenBiomes;
 
 import java.util.ArrayList;

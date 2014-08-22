@@ -1,6 +1,8 @@
 package holo.utils.world.feature;
 
 import java.util.Random;
+
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 public abstract class BaseWorldGenerator
@@ -31,7 +33,7 @@ public abstract class BaseWorldGenerator
     /**
      * Sets the block without metadata in the world, notifying neighbors if enabled.
      */
-    protected void setBlock(World par1World, int par2, int par3, int par4, int par5)
+    protected void setBlock(World par1World, int par2, int par3, int par4, Block par5)
     {
         this.setBlockAndMetadata(par1World, par2, par3, par4, par5, 0);
     }
@@ -39,7 +41,7 @@ public abstract class BaseWorldGenerator
     /**
      * Sets the block in the world, notifying neighbors if enabled.
      */
-    protected void setBlockAndMetadata(World par1World, int par2, int par3, int par4, int par5, int par6)
+    protected void setBlockAndMetadata(World par1World, int par2, int par3, int par4, Block par5, int par6)
     {
         if (this.doBlockNotify)
         {

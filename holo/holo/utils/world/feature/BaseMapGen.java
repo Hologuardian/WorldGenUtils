@@ -1,6 +1,8 @@
 package holo.utils.world.feature;
 
 import java.util.Random;
+
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
@@ -15,7 +17,7 @@ public abstract class BaseMapGen
     /** This world object. */
     protected World worldObj;
 
-    public void generate(IChunkProvider chunkProvider, World world, int centerX, int centerZ, short[] shortArray)
+    public void generate(IChunkProvider chunkProvider, World world, int centerX, int centerZ, Block[] shortArray)
     {
         int k = this.range;
         this.worldObj = world;
@@ -40,7 +42,7 @@ public abstract class BaseMapGen
 	/**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected abstract void recursiveGenerate(World world, int chunkX, int chunkZ, int centerX, int centerZ, short[] shortArray);
+    protected abstract void recursiveGenerate(World world, int chunkX, int chunkZ, int centerX, int centerZ, Block[] shortArray);
     
     public int hashCoord(int x, int y, int z)
     {

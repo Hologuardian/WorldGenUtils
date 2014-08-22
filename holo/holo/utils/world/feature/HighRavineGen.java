@@ -3,6 +3,7 @@ package holo.utils.world.feature;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -12,7 +13,7 @@ public class HighRavineGen extends MapGenBase
 {
     private float[] field_75046_d = new float[1024];
 
-    protected void generateRavine(long par1, int par3, int par4, byte[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
+    protected void generateRavine(long par1, int par3, int par4, Block[] par5ArrayOfByte, double par6, double par8, double par10, float par12, float par13, float par14, int par15, int par16, double par17)
     {
         Random random = new Random(par1);
         double d4 = (double)(par3 * 16 + 8);
@@ -191,7 +192,7 @@ public class HighRavineGen extends MapGenBase
     /**
      * Recursively called by generate() (generate) and optionally by itself.
      */
-    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, byte[] par6ArrayOfByte)
+    protected void recursiveGenerate(World par1World, int par2, int par3, int par4, int par5, Block[] par6ArrayOfByte)
     {
         if (this.rand.nextInt(50) == 0)
         {
@@ -210,9 +211,9 @@ public class HighRavineGen extends MapGenBase
         }
     }
 
-    protected boolean isOceanBlock(byte[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
+    protected boolean isOceanBlock(Block[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
     {
-        return data[index] == Block.waterMoving.blockID || data[index] == Block.waterStill.blockID;
+        return data[index] == Blocks.flowing_water || data[index] == Blocks.water;
     }
 
     //Exception biomes to make sure we generate like vanilla
@@ -226,10 +227,10 @@ public class HighRavineGen extends MapGenBase
 
     //Determine if the block at the specified location is the top block for the biome, we take into account
     //Vanilla bugs to make sure that we generate the map the same way vanilla does.
-    private boolean isTopBlock(byte[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
+    private boolean isTopBlock(Block[] data, int index, int x, int y, int z, int chunkX, int chunkZ)
     {
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(x + chunkX * 16, z + chunkZ * 16);
-        return (isExceptionBiome(biome) ? data[index] == Block.grass.blockID : data[index] == biome.topBlock);
+        return (isExceptionBiome(biome) ? data[index] == Blocks.grass : data[index] == biome.topBlock);
     }
 
     /**
@@ -247,26 +248,26 @@ public class HighRavineGen extends MapGenBase
      * @param chunkZ Chunk Y position
      * @param foundTop True if we've encountered the biome's top block. Ideally if we've broken the surface.
      */
-    protected void digBlock(byte[] data, int index, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop)
+    protected void digBlock(Block[] data, int index, int x, int y, int z, int chunkX, int chunkZ, boolean foundTop)
     {
         BiomeGenBase biome = worldObj.getBiomeGenForCoords(x + chunkX * 16, z + chunkZ * 16);
-        int top    = (isExceptionBiome(biome) ? Block.grass.blockID : biome.topBlock);
-        int filler = (isExceptionBiome(biome) ? Block.dirt.blockID  : biome.fillerBlock);
-        int block  = data[index];
+        Block top    = (isExceptionBiome(biome) ? Blocks.grass : biome.topBlock);
+        Block filler = (isExceptionBiome(biome) ? Blocks.dirt  : biome.fillerBlock);
+        Block block  = data[index];
 
-        if (block == Block.cobblestone.blockID || block == filler || block == top)
+        if (block == Blocks.cobblestone || block == filler || block == top)
         {
             if (y < 32)
             {
-                data[index] = (byte)Block.waterMoving.blockID;
+                data[index] = Blocks.flowing_water;
             }
             else
             {
-                data[index] = 0;
+                data[index] = Blocks.air;
 
                 if (foundTop && data[index - 1] == filler)
                 {
-                    data[index - 1] = (byte)top;
+                    data[index - 1] = top;
                 }
             }
         }

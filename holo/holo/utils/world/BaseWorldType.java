@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -32,8 +33,8 @@ public class BaseWorldType extends WorldType
     public int biomeSize;
     public int worldHeight = 256;
     public float worldScale = 2.0F;
-    public short fillBlock = (short) Block.stone.blockID;
-    public short waterBlock = (short) Block.waterStill.blockID;
+    public Block fillBlock = Blocks.stone;
+    public Block waterBlock = Blocks.water;
     
     public ArrayList<BaseMapGen> mapGenFeatures = new ArrayList<BaseMapGen>();
     public Map<BaseWorldGenerator, Float> globalFeatures = new HashMap<BaseWorldGenerator, Float>();
@@ -154,9 +155,9 @@ public class BaseWorldType extends WorldType
         this.worldHeight = height;
     }
     
-    public void setFillBlock(int ID)
+    public void setFillBlock(Block b)
     {
-        this.fillBlock = (byte)ID;
+        this.fillBlock = b;
     }
     
     public void setWorldScale(float scale)

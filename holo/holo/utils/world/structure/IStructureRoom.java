@@ -3,6 +3,7 @@ package holo.utils.world.structure;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 
@@ -55,7 +56,7 @@ public interface IStructureRoom
 	/**
 	 * @return An int array of blockIDs of the room hashed X then Y then Z.
 	 */
-	public abstract int[] getBlocks();
+	public abstract Block[] getBlocks();
 	
 	/**
 	 * Generates the room within the structureBounding box.
