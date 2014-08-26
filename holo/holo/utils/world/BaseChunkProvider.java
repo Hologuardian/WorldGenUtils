@@ -13,6 +13,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
+import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
@@ -23,6 +24,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.structure.MapGenScatteredFeature;
@@ -227,7 +230,6 @@ public class BaseChunkProvider implements IChunkProvider
             for (int l = 0; l < 16; ++l)
             {
                 BiomeGenBase biomegenbase = par4ArrayOfBiomeGenBase[l + k * 16];
-                float f = biomegenbase.getFloatTemperature();
                 int i1 = (int)(this.stoneNoise[k + l * 16] / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int j1 = -1;
                 Block s1 = biomegenbase.topBlock;
@@ -266,14 +268,9 @@ public class BaseChunkProvider implements IChunkProvider
 
                                 if (k1 < b0 && s1 == Blocks.air)
                                 {
-                                    if (f < 0.15F)
-                                    {
-                                        s1 = Blocks.ice;
-                                    }
-                                    else
-                                    {
+          
                                         s1 = Blocks.water;
-                                    }
+                                    
                                 }
 
                                 j1 = i1;
@@ -433,15 +430,15 @@ public class BaseChunkProvider implements IChunkProvider
                     for (int j3 = -b0; j3 <= b0; ++j3)
                     {
                         BiomeGenBase biomegenbase1 = this.biomesForGeneration[k2 + i3 + 2 + (l2 + j3 + 2) * (par5 + 5)];
-                        float f4 = this.parabolicField[i3 + 2 + (j3 + 2) * 5] / (biomegenbase1.minHeight + 2.0F);
+                        float f4 = this.parabolicField[i3 + 2 + (j3 + 2) * 5] / (biomegenbase1.rootHeight + 2.0F);
 
-                        if (biomegenbase1.minHeight > biomegenbase.minHeight)
+                        if (biomegenbase1.rootHeight > biomegenbase.rootHeight)
                         {
                             f4 /= 2.0F;
                         }
 
-                        f1 += biomegenbase1.maxHeight * f4;
-                        f2 += biomegenbase1.minHeight * f4;
+                        f1 += biomegenbase1.heightVariation * f4;
+                        f2 += biomegenbase1.heightVariation * f4;
                         f3 += f4;
                     }
                 }

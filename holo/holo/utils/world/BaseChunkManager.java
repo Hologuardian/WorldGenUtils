@@ -97,7 +97,7 @@ public class BaseChunkManager extends WorldChunkManager
 
         for (int i1 = 0; i1 < par4 * par5; ++i1)
         {
-            float f = (float)BiomeGenBase.biomeList[aint[i1]].getIntRainfall() / 65536.0F;
+            float f = (float)BiomeGenBase.getBiomeGenArray()[aint[i1]].getIntRainfall() / 65536.0F;
 
             if (f > 1.0F)
             {
@@ -136,7 +136,7 @@ public class BaseChunkManager extends WorldChunkManager
 
         for (int i1 = 0; i1 < par4 * par5; ++i1)
         {
-            float f = (float)BiomeGenBase.biomeList[aint[i1]].getIntTemperature() / 65536.0F;
+            float f = (float)BiomeGenBase.getBiomeGenArray()[aint[i1]].getFloatTemperature(par2, par3, par4) / 65536.0F;
 
             if (f > 1.0F)
             {
@@ -165,7 +165,7 @@ public class BaseChunkManager extends WorldChunkManager
 
         for (int i1 = 0; i1 < par4 * par5; ++i1)
         {
-            par1ArrayOfBiomeGenBase[i1] = BiomeGenBase.biomeList[aint[i1]];
+            par1ArrayOfBiomeGenBase[i1] = BiomeGenBase.getBiomeGenArray()[aint[i1]];
         }
 
         return par1ArrayOfBiomeGenBase;
@@ -205,7 +205,7 @@ public class BaseChunkManager extends WorldChunkManager
 
             for (int i1 = 0; i1 < par4 * par5; ++i1)
             {
-                par1ArrayOfBiomeGenBase[i1] = BiomeGenBase.biomeList[aint[i1]];
+                par1ArrayOfBiomeGenBase[i1] = BiomeGenBase.getBiomeGenArray()[aint[i1]];
             }
 
             return par1ArrayOfBiomeGenBase;
@@ -228,7 +228,7 @@ public class BaseChunkManager extends WorldChunkManager
 
         for (int j2 = 0; j2 < l1 * i2; ++j2)
         {
-            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[aint[j2]];
+            BiomeGenBase biomegenbase = BiomeGenBase.getBiomeGenArray()[aint[j2]];
 
             if (!par4List.contains(biomegenbase))
             {
@@ -260,7 +260,7 @@ public class BaseChunkManager extends WorldChunkManager
         {
             int l2 = l + k2 % l1 << 2;
             int i3 = i1 + k2 / l1 << 2;
-            BiomeGenBase biomegenbase = BiomeGenBase.biomeList[aint[k2]];
+            BiomeGenBase biomegenbase = BiomeGenBase.getBiomeGenArray()[aint[k2]];
 
             if (par4List.contains(biomegenbase) && (chunkposition == null || par5Random.nextInt(j2 + 1) == 0))
             {
